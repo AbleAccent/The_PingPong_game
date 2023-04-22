@@ -9,11 +9,11 @@ display.set_caption('PingPong')
 
 
 class GameSprite(sprite.Sprite):
-    def __init__(self, image_file, speed, x_cor, y_cor, height, widgth):
+    def __init__(self, image_file, speed, x_cor, y_cor, height, width):
         super().__init__()
-        # self.image = transform.scale(image.load(image_file), (widgth, height))
+        # self.image = transform.scale(image.load(image_file), (width, height))
         self.speed = speed
-        self.image = Surface((height, widgth))
+        self.image = Surface((height, width))
         self.image.fill((255, 255, 255))
         self.rect = self.image.get_rect()
         self.rect.x = x_cor
@@ -44,19 +44,18 @@ class Player2(GameSprite):
 
 
 class Ball(GameSprite):
-    def __init__(self, image_file, speed, x_cor, y_cor, height, widgth):
-        super().__init__(image_file, speed, x_cor, y_cor, height, widgth)
+    def __init__(self, image_file, speed, x_cor, y_cor, height, width):
+        super().__init__(image_file, speed, x_cor, y_cor, height, width)
+        self.image.fill((0, 0, 0))
+        draw.circle(self.image, (230, 15, 50), (height // 2, width // 2), height // 2)
         self.speed_x = speed
         self.speed_y = speed
-        self.radius = 25
     def update(self):
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
         if (self.rect.y < 0) or (self.rect.y > 490):
             self.speed_y *= -1
     
-    def character(self):
-        self.player_character = pygame.draw.circle(self.x_cor, self.y_cor, self.radius, self.width)
 
         
 
@@ -82,7 +81,7 @@ p2_lose = font.render('Player 2 lose!', True, (255, 0, 0))
 
 player1 = Player1('rocket.png', 15, 50, 200, 25, 100)
 player2 = Player2('rocket.png', 15, 650, 200, 25, 100)
-ball = Ball('ball.png', 5, 200, 200, 25, 25)
+ball = Ball('ball.png', 7, 200, 200, 25, 25)
 
 
 
@@ -101,6 +100,7 @@ while game == True:
         player2.update()
         ball.reset()
         ball.update()
+        # ball.character()
 
         if sprite.collide_rect(ball, player1):
             ball.speed_x *= -1
